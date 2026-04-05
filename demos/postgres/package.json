@@ -17,6 +17,9 @@
 		"@tanstack/react-router": "catalog:",
 		"astro": "catalog:",
 		"emdash": "workspace:*",
+		"emdash-trading": "file:../../../../packages/emdash-trading",
+		"emdash-community": "file:../../../../packages/emdash-community",
+		"emdash-lms": "file:../../../../packages/emdash-lms",
 		"pg": "^8.0.0",
 		"react": "catalog:",
 		"react-dom": "catalog:"

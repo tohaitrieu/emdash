@@ -5,12 +5,192 @@
 
 import type { ContentBylineCredit, PortableTextBlock } from "emdash";
 
+export interface Badge {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Broker {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Post {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Course {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Deal {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Enrollment {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Follow {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Industry {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Instrument {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Lesson {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Plan {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Membership {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface MissionType {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Module {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Notification {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Order {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
 export interface Page {
   id: string;
   slug: string | null;
   status: string;
   title: string;
   content?: PortableTextBlock[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Position {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
+export interface Position {
+  id: string;
+  slug: string | null;
+  status: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -31,9 +211,38 @@ export interface Post {
   bylines?: ContentBylineCredit[];
 }
 
+export interface Sector {
+  id: string;
+  slug: string | null;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
 declare module "emdash" {
   interface EmDashCollections {
+    badges: Badge;
+    brokers: Broker;
+    community_posts: Post;
+    courses: Course;
+    deals: Deal;
+    enrollments: Enrollment;
+    follows: Follow;
+    industries: Industry;
+    instruments: Instrument;
+    lessons: Lesson;
+    membership_plans: Plan;
+    memberships: Membership;
+    mission_types: MissionType;
+    modules: Module;
+    notifications: Notification;
+    orders: Order;
     pages: Page;
+    positions_active: Position;
+    positions_closed: Position;
     posts: Post;
+    sectors: Sector;
   }
 }

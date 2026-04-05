@@ -320,6 +320,15 @@ importers:
       emdash:
         specifier: workspace:*
         version: link:../../packages/core
+      emdash-community:
+        specifier: file:../../../../packages/emdash-community
+        version: file:../../packages/emdash-community(emdash@packages+core)(react@19.2.4)
+      emdash-lms:
+        specifier: file:../../../../packages/emdash-lms
+        version: file:../../packages/emdash-lms(emdash@packages+core)(react@19.2.4)
+      emdash-trading:
+        specifier: file:../../../../packages/emdash-trading
+        version: file:../../packages/emdash-trading(emdash@packages+core)(react@19.2.4)
       pg:
         specifier: ^8.0.0
         version: 8.18.0
@@ -5425,6 +5434,24 @@ packages:
   electron-to-chromium@1.5.267:
     resolution: {integrity: sha512-0Drusm6MVRXSOJpGbaSVgcQsuB4hEkMpHXaVstcPmhu5LIedxs1xNK/nIxmQIU/RPC0+1/o0AVZfBTkTNJOdUw==}
 
+  emdash-community@file:../../packages/emdash-community:
+    resolution: {directory: ../../packages/emdash-community, type: directory}
+    peerDependencies:
+      emdash: '>=0.1.0'
+      react: ^18 || ^19
+
+  emdash-lms@file:../../packages/emdash-lms:
+    resolution: {directory: ../../packages/emdash-lms, type: directory}
+    peerDependencies:
+      emdash: '>=0.1.0'
+      react: ^18 || ^19
+
+  emdash-trading@file:../../packages/emdash-trading:
+    resolution: {directory: ../../packages/emdash-trading, type: directory}
+    peerDependencies:
+      emdash: '>=0.1.0'
+      react: ^18 || ^19
+
   emmet@2.4.11:
     resolution: {integrity: sha512-23QPJB3moh/U9sT4rQzGgeyyGIrcM+GH5uVYg2C6wZIxAIJq7Ng3QLT79tl8FUwDXhyq9SusfknOrofAKqvgyQ==}
 
@@ -7513,6 +7540,10 @@ packages:
   strip-json-comments@5.0.3:
     resolution: {integrity: sha512-1tB5mhVo7U+ETBKNf92xT4hrQa3pm0MZ0PQvuDnWgAAGHDsfp4lPSpiS6psrSiet87wyGPh9ft6wmhOMQ0hDiw==}
     engines: {node: '>=14.16'}
+
+  stripe@17.7.0:
+    resolution: {integrity: sha512-aT2BU9KkizY9SATf14WhhYVv2uOapBWX0OFWF4xvcj1mPaNotlSc2CsxpS4DS46ZueSppmCF5BX1sNYBtwBvfw==}
+    engines: {node: '>=12.*'}
 
   style-to-js@1.1.21:
     resolution: {integrity: sha512-RjQetxJrrUJLQPHbLku6U/ocGtzyjbJMP9lCNK7Ag0CNh690nSH8woqWH9u16nMjYBAok+i7JO1NP2pOy8IsPQ==}
@@ -12828,6 +12859,23 @@ snapshots:
 
   electron-to-chromium@1.5.267: {}
 
+  emdash-community@file:../../packages/emdash-community(emdash@packages+core)(react@19.2.4):
+    dependencies:
+      emdash: link:packages/core
+      react: 19.2.4
+
+  emdash-lms@file:../../packages/emdash-lms(emdash@packages+core)(react@19.2.4):
+    dependencies:
+      emdash: link:packages/core
+      react: 19.2.4
+    optionalDependencies:
+      stripe: 17.7.0
+
+  emdash-trading@file:../../packages/emdash-trading(emdash@packages+core)(react@19.2.4):
+    dependencies:
+      emdash: link:packages/core
+      react: 19.2.4
+
   emmet@2.4.11:
     dependencies:
       '@emmetio/abbreviation': 2.3.3
@@ -15588,6 +15636,12 @@ snapshots:
   strip-json-comments@2.0.1: {}
 
   strip-json-comments@5.0.3: {}
+
+  stripe@17.7.0:
+    dependencies:
+      '@types/node': 24.10.13
+      qs: 6.15.0
+    optional: true
 
   style-to-js@1.1.21:
     dependencies:

@@ -4,6 +4,11 @@ import { defineConfig } from "astro/config";
 import emdash from "emdash/astro";
 import { postgres } from "emdash/db";
 
+// totrieu.com plugins
+import { tradingPlugin } from "emdash-trading";
+import { communityPlugin } from "emdash-community";
+import { lmsPlugin } from "emdash-lms";
+
 export default defineConfig({
 	output: "server",
 	adapter: node({
@@ -15,6 +20,11 @@ export default defineConfig({
 			database: postgres({
 				connectionString: process.env.DATABASE_URL || "postgres://localhost:5432/emdash_dev",
 			}),
+			plugins: [
+				tradingPlugin(),
+				communityPlugin(),
+				lmsPlugin(),
+			],
 		}),
 	],
 	devToolbar: { enabled: false },
