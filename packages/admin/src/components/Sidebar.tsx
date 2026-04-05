@@ -35,7 +35,7 @@ const ROLE_EDITOR = 40;
 
 export interface SidebarNavProps {
 	manifest: {
-		collections: Record<string, { label: string }>;
+		collections: Record<string, { label: string; source?: string }>;
 		plugins: Record<
 			string,
 			{
@@ -161,16 +161,41 @@ export function SidebarNav({ manifest }: SidebarNavProps) {
 
 	// --- Build nav item groups ---
 
-	const contentItems: NavItem[] = [{ to: "/", label: "Dashboard", icon: SquaresFour }];
+	// Group collections by source (plugin)
+	const collectionsBySource: Record<string, Array<{ name: string; label: string }>> = {};
 	for (const [name, config] of Object.entries(manifest.collections)) {
-		contentItems.push({
-			to: "/content/$collection",
-			label: config.label,
-			icon: FileText,
-			params: { collection: name },
-		});
+		const source = config.source || "core";
+		if (!collectionsBySource[source]) {
+			collectionsBySource[source] = [];
+		}
+		collectionsBySource[source].push({ name, label: config.label });
 	}
+
+	// Core content items (seed/core collections + media)
+	const coreCollections = [
+		...(collectionsBySource["seed"] || []),
+		...(collectionsBySource["core"] || []),
+	];
+	const contentItems: NavItem[] = coreCollections.map((c) => ({
+		to: "/content/$collection",
+		label: c.label,
+		icon: FileText,
+		params: { collection: c.name },
+	}));
 	contentItems.push({ to: "/media", label: "Media", icon: Image });
+
+	// Plugin-grouped collections
+	const pluginGroups: Record<string, NavItem[]> = {};
+	for (const [source, collections] of Object.entries(collectionsBySource)) {
+		if (source === "seed" || source === "core") continue;
+		const pluginName = source.startsWith("plugin:") ? source.slice(7) : source;
+		pluginGroups[pluginName] = collections.map((c) => ({
+			to: "/content/$collection",
+			label: c.label,
+			icon: FileText,
+			params: { collection: c.name },
+		}));
+	}
 
 	const manageItems: NavItem[] = [
 		{
@@ -365,17 +390,34 @@ export function SidebarNav({ manifest }: SidebarNavProps) {
 
 					<KumoSidebar.Separator />
 
-					{/* Content — collections + media (collapsible) */}
-					{visibleContent.length > 1 && (
+					{/* Content — core collections + media (collapsible) */}
+					{visibleContent.length > 0 && (
 						<KumoSidebar.Group collapsible defaultOpen>
 							<KumoSidebar.GroupLabel>Content</KumoSidebar.GroupLabel>
 							<KumoSidebar.GroupContent>
 								<KumoSidebar.Menu>
-									{renderNavItems(visibleContent.filter((i) => i.to !== "/"))}
+									{renderNavItems(visibleContent)}
 								</KumoSidebar.Menu>
 							</KumoSidebar.GroupContent>
 						</KumoSidebar.Group>
 					)}
+
+					{/* Plugin collection groups */}
+					{Object.entries(pluginGroups).map(([pluginName, items]) => (
+						<React.Fragment key={pluginName}>
+							<KumoSidebar.Separator />
+							<KumoSidebar.Group collapsible defaultOpen>
+								<KumoSidebar.GroupLabel>
+									{pluginName.charAt(0).toUpperCase() + pluginName.slice(1)}
+								</KumoSidebar.GroupLabel>
+								<KumoSidebar.GroupContent>
+									<KumoSidebar.Menu>
+										{renderNavItems(filterByRole(items))}
+									</KumoSidebar.Menu>
+								</KumoSidebar.GroupContent>
+							</KumoSidebar.Group>
+						</React.Fragment>
+					))}
 
 					<KumoSidebar.Separator />
 

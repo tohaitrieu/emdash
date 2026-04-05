@@ -29,6 +29,8 @@ export interface ManifestCollection {
 	supports: string[];
 	hasSeo: boolean;
 	urlPattern?: string;
+	/** Source of this collection (e.g., "seed", "plugin:trading", "plugin:lms") */
+	source?: string;
 	fields: Record<
 		string,
 		{
