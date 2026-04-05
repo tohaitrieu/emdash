@@ -49,6 +49,7 @@ export interface Deal {
   id: string;
   slug: string | null;
   status: string;
+  title?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -59,6 +60,7 @@ export interface Enrollment {
   id: string;
   slug: string | null;
   status: string;
+  title?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -69,6 +71,7 @@ export interface Follow {
   id: string;
   slug: string | null;
   status: string;
+  title?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -119,6 +122,7 @@ export interface Membership {
   id: string;
   slug: string | null;
   status: string;
+  title?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -149,6 +153,7 @@ export interface Notification {
   id: string;
   slug: string | null;
   status: string;
+  title?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -159,6 +164,7 @@ export interface Order {
   id: string;
   slug: string | null;
   status: string;
+  title?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -181,6 +187,7 @@ export interface Position {
   id: string;
   slug: string | null;
   status: string;
+  title?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -191,6 +198,7 @@ export interface Position {
   id: string;
   slug: string | null;
   status: string;
+  title?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;

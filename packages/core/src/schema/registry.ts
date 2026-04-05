@@ -37,7 +37,7 @@ const COLUMN_TYPES: ReadonlySet<string> = new Set(["TEXT", "REAL", "INTEGER", "J
 const VALID_SOURCES: ReadonlySet<string> = new Set(["manual", "discovered", "seed"]);
 
 function isCollectionSource(value: string): value is CollectionSource {
-	return VALID_SOURCES.has(value) || value.startsWith("template:") || value.startsWith("import:");
+	return VALID_SOURCES.has(value) || value.startsWith("template:") || value.startsWith("import:") || value.startsWith("plugin:");
 }
 
 function isFieldType(value: string): value is FieldType {
