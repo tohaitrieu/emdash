@@ -184,17 +184,64 @@ export function SidebarNav({ manifest }: SidebarNavProps) {
 	}));
 	contentItems.push({ to: "/media", label: "Media", icon: Image });
 
-	// Plugin-grouped collections
+	// Build plugin admin pages map
+	const pluginAdminPages: Record<string, NavItem[]> = {};
+	for (const [pluginId, config] of Object.entries(manifest.plugins)) {
+		if (config.enabled === false) continue;
+		if (config.adminPages && config.adminPages.length > 0) {
+			const pluginPages = pluginAdmins[pluginId]?.pages;
+			const isBlocksMode = config.adminMode === "blocks";
+			const pages: NavItem[] = [];
+			for (const page of config.adminPages) {
+				if (!isBlocksMode && !pluginPages?.[page.path]) continue;
+				const label =
+					page.label ||
+					pluginId
+						.split("-")
+						.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+						.join(" ");
+				pages.push({ to: `/plugins/${pluginId}${page.path}`, label, icon: PuzzlePiece });
+			}
+			if (pages.length > 0) {
+				pluginAdminPages[pluginId] = pages;
+			}
+		}
+	}
+
+	// Plugin-grouped collections only (admin pages go to separate Plugins section)
 	const pluginGroups: Record<string, NavItem[]> = {};
 	for (const [source, collections] of Object.entries(collectionsBySource)) {
 		if (source === "seed" || source === "core") continue;
 		const pluginName = source.startsWith("plugin:") ? source.slice(7) : source;
-		pluginGroups[pluginName] = collections.map((c) => ({
+		const collectionItems = collections.map((c) => ({
 			to: "/content/$collection",
 			label: c.label,
 			icon: FileText,
 			params: { collection: c.name },
 		}));
+		pluginGroups[pluginName] = collectionItems;
+	}
+
+	// Plugin dashboard links (one entry per plugin with admin pages)
+	const pluginItems: NavItem[] = [];
+	for (const [pluginId, config] of Object.entries(manifest.plugins)) {
+		if (config.enabled === false) continue;
+		// Show plugin if it has any admin pages (react or blocks mode)
+		if (config.adminPages && config.adminPages.length > 0) {
+			const pluginPages = pluginAdmins[pluginId]?.pages;
+			const isBlocksMode = config.adminMode === "blocks";
+			// Check if plugin has a root page or any page we can link to
+			const hasRootPage = isBlocksMode || pluginPages?.["/"];
+			const firstPage = config.adminPages[0];
+			const targetPath = hasRootPage ? "" : firstPage?.path || "";
+			if (isBlocksMode || pluginPages?.[targetPath || "/"]) {
+				const label = pluginId
+					.split("-")
+					.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+					.join(" ");
+				pluginItems.push({ to: `/plugins/${pluginId}${targetPath}`, label, icon: PuzzlePiece });
+			}
+		}
 	}
 
 	const manageItems: NavItem[] = [
@@ -243,25 +290,6 @@ export function SidebarNav({ manifest }: SidebarNavProps) {
 		{ to: "/import/wordpress", label: "Import", icon: Upload, minRole: ROLE_ADMIN },
 		{ to: "/settings", label: "Settings", icon: Gear, minRole: ROLE_ADMIN },
 	);
-
-	const pluginItems: NavItem[] = [];
-	for (const [pluginId, config] of Object.entries(manifest.plugins)) {
-		if (config.enabled === false) continue;
-		if (config.adminPages && config.adminPages.length > 0) {
-			const pluginPages = pluginAdmins[pluginId]?.pages;
-			const isBlocksMode = config.adminMode === "blocks";
-			for (const page of config.adminPages) {
-				if (!isBlocksMode && !pluginPages?.[page.path]) continue;
-				const label =
-					page.label ||
-					pluginId
-						.split("-")
-						.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-						.join(" ");
-				pluginItems.push({ to: `/plugins/${pluginId}${page.path}`, label, icon: PuzzlePiece });
-			}
-		}
-	}
 
 	const filterByRole = (items: NavItem[]) =>
 		items.filter((item) => !item.minRole || userRole >= item.minRole);
@@ -443,12 +471,12 @@ export function SidebarNav({ manifest }: SidebarNavProps) {
 						</KumoSidebar.Group>
 					)}
 
-					{/* Plugin pages (collapsible) */}
+					{/* Plugin admin pages (Settings, Reports, etc.) */}
 					{visiblePlugins.length > 0 && (
 						<>
 							<KumoSidebar.Separator />
 							<KumoSidebar.Group collapsible defaultOpen>
-								<KumoSidebar.GroupLabel>Plugins</KumoSidebar.GroupLabel>
+								<KumoSidebar.GroupLabel>Plugin Tools</KumoSidebar.GroupLabel>
 								<KumoSidebar.GroupContent>
 									<KumoSidebar.Menu>{renderNavItems(visiblePlugins)}</KumoSidebar.Menu>
 								</KumoSidebar.GroupContent>

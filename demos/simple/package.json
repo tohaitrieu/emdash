@@ -19,6 +19,7 @@
     "@astrojs/node": "catalog:",
     "@astrojs/react": "catalog:",
     "@emdash-cms/plugin-audit-log": "workspace:*",
+    "emdash-community": "file:../../../../packages/emdash-community",
     "@emdash-cms/plugin-color": "workspace:*",
     "astro": "catalog:",
     "better-sqlite3": "catalog:",
