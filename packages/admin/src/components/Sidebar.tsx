@@ -46,6 +46,8 @@ export interface SidebarNavProps {
 					path: string;
 					label?: string;
 					icon?: string;
+					/** Which sidebar group to place this page in. Default: "plugins" */
+					group?: "manage" | "admin" | "plugins";
 				}>;
 				dashboardWidgets?: Array<{ id: string; title?: string }>;
 				version?: string;
@@ -219,6 +221,9 @@ export function SidebarNav({ manifest }: SidebarNavProps) {
 		{ to: "/settings", label: "Settings", icon: Gear, minRole: ROLE_ADMIN },
 	);
 
+	// Build plugin nav items, separating by group
+	const pluginManageItems: NavItem[] = [];
+	const pluginAdminItems: NavItem[] = [];
 	const pluginItems: NavItem[] = [];
 	for (const [pluginId, config] of Object.entries(manifest.plugins)) {
 		if (config.enabled === false) continue;
@@ -233,7 +238,20 @@ export function SidebarNav({ manifest }: SidebarNavProps) {
 						.split("-")
 						.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
 						.join(" ");
-				pluginItems.push({ to: `/plugins/${pluginId}${page.path}`, label, icon: PuzzlePiece });
+				const navItem: NavItem = {
+					to: `/plugins/${pluginId}${page.path}`,
+					label,
+					icon: PuzzlePiece,
+					minRole: ROLE_EDITOR,
+				};
+				// Route to appropriate group based on page.group
+				if (page.group === "manage") {
+					pluginManageItems.push(navItem);
+				} else if (page.group === "admin") {
+					pluginAdminItems.push({ ...navItem, minRole: ROLE_ADMIN });
+				} else {
+					pluginItems.push(navItem);
+				}
 			}
 		}
 	}
@@ -242,8 +260,9 @@ export function SidebarNav({ manifest }: SidebarNavProps) {
 		items.filter((item) => !item.minRole || userRole >= item.minRole);
 
 	const visibleContent = filterByRole(contentItems);
-	const visibleManage = filterByRole(manageItems);
-	const visibleAdmin = filterByRole(adminItems);
+	// Include plugin items that belong in manage/admin groups
+	const visibleManage = filterByRole([...manageItems, ...pluginManageItems]);
+	const visibleAdmin = filterByRole([...adminItems, ...pluginAdminItems]);
 	const visiblePlugins = filterByRole(pluginItems);
 
 	function renderNavItems(items: NavItem[]) {

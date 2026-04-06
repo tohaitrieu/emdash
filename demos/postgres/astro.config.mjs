@@ -1,8 +1,14 @@
 import node from "@astrojs/node";
 import react from "@astrojs/react";
+import { ecommercePlugin } from "@emdash-cms/plugin-ecommerce";
+import { instrumentsPlugin } from "@emdash-cms/plugin-instruments";
 import { defineConfig } from "astro/config";
-import emdash from "emdash/astro";
+import emdash, { s3 } from "emdash/astro";
 import { postgres } from "emdash/db";
+import { loadEnv } from "vite";
+
+// Load env vars for config
+const env = loadEnv("", process.cwd(), "");
 
 export default defineConfig({
 	output: "server",
@@ -13,8 +19,17 @@ export default defineConfig({
 		react(),
 		emdash({
 			database: postgres({
-				connectionString: process.env.DATABASE_URL || "postgres://localhost:5432/emdash_dev",
+				// Connection string from environment
+				connectionString: env.DATABASE_URL,
 			}),
+			storage: s3({
+				endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+				bucket: "totrieu-media",
+				accessKeyId: env.R2_ACCESS_KEY_ID,
+				secretAccessKey: env.R2_SECRET_ACCESS_KEY,
+				publicUrl: "https://media.totrieu.com",
+			}),
+			plugins: [instrumentsPlugin(), ecommercePlugin()],
 		}),
 	],
 	devToolbar: { enabled: false },

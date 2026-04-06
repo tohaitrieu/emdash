@@ -93,6 +93,14 @@
 				{ "slug": "tools", "label": "Tools" },
 				{ "slug": "creativity", "label": "Creativity" }
 			]
+		},
+		{
+			"name": "instrument",
+			"label": "Instruments",
+			"labelSingular": "Instrument",
+			"hierarchical": false,
+			"collections": ["posts"],
+			"terms": []
 		}
 	],
 
